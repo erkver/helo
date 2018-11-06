@@ -4,11 +4,11 @@ import { Provider } from "react-redux";
 import store from "./ducks/store";
 import routes from "./routes";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faSmileWink } from "@fortawesome/free-solid-svg-icons";
+import { faSmileWink, faHome, faFileAlt, faPowerOff } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import './App.scss';
 
-library.add(far, faSmileWink);
+library.add(far, faSmileWink, faHome, faFileAlt, faPowerOff);
 
 class App extends Component {
   render() {

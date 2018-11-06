@@ -14,24 +14,23 @@ class Auth extends Component {
     }
   }
 
-  addUser = () => {
+  addUser = e => {
     const { username, password } = this.state;
     axios.post('/api/register', { username, password }).then(res => {
       console.log(res);
-      const { data } = res.value;
       const { getUserInfo } = this.props;
-      getUserInfo(data.username, data.id, data.profilePic);
+      getUserInfo(res.data.username, res.data.id, res.data.profilePic);
       this.props.history.push('/dashboard');
-    })
+    });
+    e.preventDefault();
   }
 
   getUser = () => {
     const { username, password } = this.state;
     axios.post('/api/login', { username, password }).then(res => {
       console.log(res);
-      const { data } = res.value;
       const { getUserInfo } = this.props;
-      getUserInfo(data.username, data.id, data.profilePic);
+      getUserInfo(res.data.username, res.data.id, res.data.profilePic);
       this.props.history.push('/dashboard');
     })
   }
@@ -42,17 +41,36 @@ class Auth extends Component {
     return (
       <div className="auth-cont">
         <form className="form-cont" onSubmit={this.addUser}>
+          <FontAwesomeIcon icon={["far", "smile-wink" ]} className="dash-icon" />
           <h1>Helo</h1>
-          <FontAwesomeIcon icon={["far", "smile-wink" ]} style={{"color": "white"}} />
-          <input onChange={e => this.setState({username: e.target.value})} type="text" value={username} placeholder="Username" />
-          <input onChange={e => this.setState({password: e.target.value})} type="text" value={password} placeholder="Password" />
-          <button type="submit">Register</button>
-          <button onClick={this.getUser}>Login</button>
+          <div className="input-cont">
+            <label>Username:</label>
+            <input 
+              onChange={e => this.setState({username: e.target.value})} 
+              type="text" 
+              required
+              value={username} 
+              placeholder="Username" />
+          </div>
+          <div className="input-cont">
+            <label>Password:</label>
+            <input 
+              onChange={e => this.setState({password: e.target.value})} 
+              type="text" 
+              value={password}
+              required 
+              placeholder="Password" />
+          </div>
+          <div className="btn-cont">
+            <button onClick={this.getUser}>Login</button>
+            <button type="submit">Register</button>
+          </div>
         </form>
       </div>
     )
   }
 }
 
+const mapStateToProps = state => state;
 
-export default connect(getUserInfo)(Auth);
+export default connect(mapStateToProps, {getUserInfo})(Auth);
